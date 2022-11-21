@@ -1,6 +1,7 @@
 import { ArrangeHorizontal } from "iconsax-react";
 import React from "react";
 import styled from "styled-components";
+import { noWCommas } from "../helpers";
 
 const Hero = () => {
   const [rates, setRates] = React.useState({});
@@ -54,7 +55,7 @@ const Hero = () => {
             {" "}
             <span className="rate">
               {" "}
-              {(rates.parallel_buy * Number(convert)).toFixed(2)}
+              {noWCommas((rates.parallel_buy * Number(convert)).toFixed(2))}
             </span>{" "}
             <span> NGN</span>
           </div>
@@ -64,7 +65,7 @@ const Hero = () => {
           <div className="amount">
             <label htmlFor="amount">Amount</label>
             <input
-              type="text"
+              type="number"
               name="amount"
               id="amount"
               placeholder="Enter amount"
