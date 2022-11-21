@@ -6,18 +6,22 @@ import { noWCommas } from "../helpers";
 const Hero = () => {
   const [rates, setRates] = React.useState({});
   const [convert, setconvert] = React.useState(1);
-  const endpoint = "http://localhost:8000/api/rate/NGN";
-  const fetchRates = async () => {
-    const response = await fetch(endpoint);
-    const data = await response.json();
-    return data;
-  };
+  const endpoint =
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:8000/api/rate/NGN"
+      : process.env.NODE_ENV === "production"
+      ? "http://exchange.hng.tech:8000/api/rate/NGN"
+      : "";
   React.useEffect(() => {
+    const fetchRates = async () => {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+      return data;
+    };
     fetchRates().then((ratesData) => {
-      console.log(ratesData.data.rate);
       setRates(ratesData.data.rate);
     });
-  }, []);
+  }, [endpoint]);
 
   return (
     <Wrapper>
