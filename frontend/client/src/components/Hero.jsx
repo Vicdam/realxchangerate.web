@@ -3,6 +3,21 @@ import React from "react";
 import styled from "styled-components";
 
 const Hero = () => {
+  const [rates, setRates] = React.useState({});
+  const [convert, setconvert] = React.useState(1);
+  const endpoint = "http://localhost:8000/api/rate/NGN";
+  const fetchRates = async () => {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    return data;
+  };
+  React.useEffect(() => {
+    fetchRates().then((ratesData) => {
+      console.log(ratesData.data.rate);
+      setRates(ratesData.data.rate);
+    });
+  }, []);
+
   return (
     <Wrapper>
       <Container1>
@@ -30,7 +45,21 @@ const Hero = () => {
         </div>
       </Container1>
       <Container2>
-        <h3>Select a currency</h3>
+        <Rate>
+          <div>
+            Parallel rate of <span className="convert"> {convert} </span>USD
+            today is
+          </div>
+          <div>
+            {" "}
+            <span className="rate">
+              {" "}
+              {(rates.parallel_buy * Number(convert)).toFixed(2)}
+            </span>{" "}
+            <span> NGN</span>
+          </div>
+        </Rate>
+        {/* <h3>Select a currency</h3> */}
         <form action="">
           <div className="amount">
             <label htmlFor="amount">Amount</label>
@@ -39,6 +68,8 @@ const Hero = () => {
               name="amount"
               id="amount"
               placeholder="Enter amount"
+              value={convert}
+              onChange={(e) => setconvert(e.target.value)}
             />
           </div>
           <div className="currency">
@@ -50,18 +81,37 @@ const Hero = () => {
             </select>
             <ArrangeHorizontal size="32" color="#00296B" />
             <select name="currency" id="currency1">
-              <option selected>Select a currency</option>
+              <option selected>Naira</option>
               <option value="NG">Naira</option>
               <option value="NG">Naira</option>
               <option value="NG">Naira</option>
             </select>
           </div>
-          <button type="submit">Convert</button>
+          <button onClick={(e) => e.preventDefault()}>Convert</button>
         </form>
       </Container2>
     </Wrapper>
   );
 };
+const Rate = styled.div`
+  font-size: 1.7rem;
+  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .rate,
+  .convert {
+    color: #0062ff;
+    font-weight: 700;
+  }
+  .rate {
+    font-size: 4rem;
+  }
+  .convert {
+    font-size: 2.5rem;
+  }
+`;
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
