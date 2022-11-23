@@ -52,8 +52,8 @@ const Hero = () => {
       <Container2>
         <Rate>
           <div>
-            Parallel rate of <span className="convert"> {convert} </span>USD
-            today is
+            At the the parallel market,{" "}
+            <span className="convert"> {convert} </span>USD is
           </div>
           <div>
             {" "}
